@@ -7,6 +7,7 @@ public class MinoController : MonoBehaviour
 {
     public NextManager NextManager;
     public MinoManager MinoManager;
+    public HoldManager HoldManager;
     public FieldMinos FieldMinos;
     public GameObject[] blocks;
 
@@ -37,7 +38,14 @@ public class MinoController : MonoBehaviour
     void Update()
     {
         Operate? operate = GetOperate();
-        if(operate != null) {
+        if(operate == Operate.Hold) {
+            MinoType minoType = HoldManager.Change(mino.Type);
+            if(minoType == MinoType.None) {
+                mino = new Mino(NextManager.Get());
+            } else {
+                mino = new Mino(minoType);
+            }
+        } else if(operate != null) {
             Mino dest = FieldMinos.Move(mino, operate.Value);
             if(dest != null) {
                 mino = dest;
