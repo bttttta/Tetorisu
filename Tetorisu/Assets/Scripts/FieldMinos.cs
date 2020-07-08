@@ -7,6 +7,7 @@ public class FieldMinos : MonoBehaviour
     public MinoManager MinoManager;
     public GameObject FieldMinoPrefab;
     public ScoreManager ScoreManager, LineManager;
+    public LevelManager LevelManager;
 
     GameObject fieldObjectNode;
     GameObject[,] fieldMinos;
@@ -16,6 +17,7 @@ public class FieldMinos : MonoBehaviour
     const int HEIGHT = 30;
     const int WIDTH = 10;
     const int MINO_SIZE = 54;
+    static readonly int[] SCORE_NORMAL = { 0, 100, 300, 500, 800 };
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +42,28 @@ public class FieldMinos : MonoBehaviour
             fieldMinoSprites[m.x, m.y].sprite = MinoManager.Sprites[(int)mino.Type];
             minoExists[m.x, m.y] = true;
         }
+
+        int deleteLines = 0;
+        for(int i = 0; i < HEIGHT; ++i) {
+            bool lineDelete = true;
+            for(int j = 0; j < WIDTH; ++j) {
+                if(minoExists[j, i] == false) {
+                    lineDelete = false;
+                }
+            }
+            if(lineDelete) {
+                for(int ii = i; ii < HEIGHT - 1; ++ii) {
+                    for(int j = 0; j < WIDTH; ++j) {
+                        fieldMinoSprites[j, ii].sprite = fieldMinoSprites[j, ii + 1].sprite;
+                        minoExists[j, ii] = minoExists[j, ii + 1];
+                    }
+                }
+                --i;
+                ++deleteLines;
+            }
+        }
+        LineManager.Add(deleteLines);
+        ScoreManager.Add(SCORE_NORMAL[deleteLines] * LevelManager.Get());
     }
 
     public Mino Move(Mino source, Operate operate) {

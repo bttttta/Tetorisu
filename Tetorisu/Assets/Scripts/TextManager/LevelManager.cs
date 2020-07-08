@@ -22,4 +22,8 @@ public class LevelManager : MonoBehaviour
         level = LineManager.Get() / 10 + 1;
         text.text = level.ToString();
     }
+
+    public int Get() {
+        return level;
+    }
 }
