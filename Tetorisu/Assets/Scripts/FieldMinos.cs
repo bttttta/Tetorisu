@@ -6,6 +6,7 @@ public class FieldMinos : MonoBehaviour
 {
     public MinoManager MinoManager;
     public GameObject FieldMinoPrefab;
+    public ScoreManager ScoreManager, LineManager;
 
     GameObject fieldObjectNode;
     GameObject[,] fieldMinos;
@@ -63,13 +64,16 @@ public class FieldMinos : MonoBehaviour
                 if(!IsLocatable(dest)) {
                     return null;
                 } else {
+                    ScoreManager.Add(1);
                     return dest;
                 }
             case Operate.HardDrop:
                 do {
                     dest.Position.y -= 1;
+                    ScoreManager.Add(1);
                 } while(IsLocatable(dest));
                 dest.Position.y += 1;
+                ScoreManager.Add(-1);
                 return dest;
             case Operate.RotateRight:
                 dest.Rotate++;
