@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PreliminalManager : MonoBehaviour
+public class MinoManager : MonoBehaviour
 {
     public Sprite[] Sprites;
 
     public Sprite GetSprite(MinoType minoType) {
         return Sprites[(int)minoType];
     }
+
 }

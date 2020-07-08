@@ -13,8 +13,7 @@ public class NextManager : MonoBehaviour
 
     Queue<MinoType> nextBugs;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         nextTypes = new MinoType[NEXT_NUM];
         nextRenderers = new SpriteRenderer[NEXT_NUM];
@@ -26,7 +25,7 @@ public class NextManager : MonoBehaviour
         }
     }
 
-    MinoType Get() {
+    public MinoType Get() {
         MinoType ret = nextTypes[0];
 
         nextTypes[0] = nextTypes[1];
