@@ -8,6 +8,8 @@ public class MinoController : MonoBehaviour
     public NextManager NextManager;
     public MinoManager MinoManager;
     public HoldManager HoldManager;
+    public LevelManager LevelManager;
+    public ScoreManager ScoreManager;
     public FieldMinos FieldMinos;
     public GameObject[] blocks;
 
@@ -15,6 +17,7 @@ public class MinoController : MonoBehaviour
     Transform fieldTransform;
     Transform[] blockTransforms;
     SpriteRenderer[] blockSpriteRenderers;
+    float fallTime = 0F;
 
     const int MINO_SIZE = 54;
     float leftTime = 0F, rightTime = 0F, dropTime = 0F;
@@ -38,6 +41,9 @@ public class MinoController : MonoBehaviour
     void Update()
     {
         Operate? operate = GetOperate();
+        int freeFall = 0;
+        Mino dest;
+
         if(operate == Operate.Hold) {
             MinoType minoType = HoldManager.Change(mino.Type);
             if(minoType == MinoType.None) {
@@ -46,15 +52,36 @@ public class MinoController : MonoBehaviour
                 mino = new Mino(minoType);
             }
         } else if(operate != null) {
-            Mino dest = FieldMinos.Move(mino, operate.Value);
+            dest = FieldMinos.Move(mino, operate.Value);
             if(dest != null) {
                 mino = dest;
+                if(operate == Operate.SoftDrop) {
+                    ScoreManager.Add(1);
+                }
             }
-            if(operate.Value == Operate.SoftDrop && dest == null || operate.Value == Operate.HardDrop) {
+            if(operate == Operate.SoftDrop && dest == null || operate == Operate.HardDrop) {
                 FieldMinos.Add(mino);
                 mino = new Mino(NextManager.Get());
             }
+
         }
+
+        if(operate == null || operate == Operate.MoveLeft || operate == Operate.MoveRight) {
+            fallTime += Time.deltaTime;
+            freeFall = FreeFall();
+            for(int i = 0; i < freeFall; ++i) {
+                dest = FieldMinos.Move(mino, Operate.SoftDrop);
+                if(dest != null) {
+                    mino = dest;
+                } else {
+                    FieldMinos.Add(mino);
+                    mino = new Mino(NextManager.Get());
+                }
+            }
+        } else {
+            fallTime = 0F;
+        }
+
         SetSprites();
     }
 
@@ -64,6 +91,44 @@ public class MinoController : MonoBehaviour
             blockTransforms[i].position = new Vector3(minoPositions[i].x * MINO_SIZE + fieldTransform.position.x, minoPositions[i].y * MINO_SIZE + fieldTransform.position.y, 0);
             blockSpriteRenderers[i].sprite = MinoManager.Sprites[(int)mino.Type];
         }
+    }
+
+    int FreeFall() {
+        int level = LevelManager.Get();
+        int ret = 0;
+
+        if(FieldMinos.Move(mino, Operate.SoftDrop) == null) {
+            if(fallTime > 0.5F) {
+                ret = 1;
+            } else {
+                ret = 0;
+            }
+        } else {
+            if(level < 10) {
+                if(fallTime * level > 1F) {
+                    ret = 1;
+                } else {
+                    ret = 0;
+                }
+            } else {
+                if(level < 12) {
+                    ret = 1;
+                } else if(level == 12) {
+                    ret = 2;
+                } else if(level == 13) {
+                    ret = 4;
+                } else if(level == 14) {
+                    ret = 5;
+                } else {
+                    ret = 20;
+                }
+            }
+        }
+
+        if(ret > 0) {
+            fallTime = 0F;
+        }
+        return ret;
     }
 
     Operate? GetOperate() {

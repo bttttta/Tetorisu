@@ -435,6 +435,8 @@ MonoBehaviour:
   NextManager: {fileID: 1846954549}
   MinoManager: {fileID: 1203163193}
   HoldManager: {fileID: 1787482939}
+  LevelManager: {fileID: 1978579615}
+  ScoreManager: {fileID: 1413081914}
   FieldMinos: {fileID: 1817757430}
   blocks:
   - {fileID: 802070071}

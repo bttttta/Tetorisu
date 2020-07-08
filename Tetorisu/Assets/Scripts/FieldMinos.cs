@@ -88,7 +88,6 @@ public class FieldMinos : MonoBehaviour
                 if(!IsLocatable(dest)) {
                     return null;
                 } else {
-                    ScoreManager.Add(1);
                     return dest;
                 }
             case Operate.HardDrop:
