@@ -13,7 +13,7 @@ public class MinoController : MonoBehaviour
     public FieldMinos FieldMinos;
     public GameObject[] blocks;
 
-    Mino mino;
+    public Mino mino;
     Transform fieldTransform;
     Transform[] blockTransforms;
     SpriteRenderer[] blockSpriteRenderers;
@@ -379,6 +379,22 @@ public class Mino {
                     return null;
             }
         }
+    }
+
+    public static Mino operator+ (Mino source, Vector2Int diff) {
+        Mino ret = new Mino(source);
+        ret.Position += diff;
+        return ret;
+    }
+
+    public override string ToString() {
+        string ret;
+        ret = "[Mino] MinoType: " + Type.ToString();
+        ret += "Positions: ";
+        foreach(var position in this.AllPositions) {
+            ret += position.ToString();
+        }
+        return ret;
     }
 
     public Mino() { }

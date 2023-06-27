@@ -125,7 +125,7 @@ public class FieldMinos : MonoBehaviour
     /// </summary>
     /// <param name="mino">調べたいテトリミノ</param>
     /// <returns>配置可能か</returns>
-    bool IsLocatable(Mino mino) {
+    public bool IsLocatable(Mino mino) {
         foreach(var m in mino.AllPositions) {
             if(m.x < 0 || m.x >= WIDTH) {
                 return false;
