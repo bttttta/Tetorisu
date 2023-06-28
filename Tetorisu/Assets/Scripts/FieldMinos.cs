@@ -68,6 +68,7 @@ public class FieldMinos : MonoBehaviour
 
     public Mino Move(Mino source, Operate operate) {
         Mino dest = new Mino(source);
+        Mino dest_srs;
         switch(operate) {
             case Operate.MoveRight:
                 dest.Position.x += 1;
@@ -99,25 +100,366 @@ public class FieldMinos : MonoBehaviour
                 ScoreManager.Add(-1);
                 return dest;
             case Operate.RotateRight:
+                // 通常回転
                 dest.Rotate++;
                 dest.Rotate %= 4;
-                if(!IsLocatable(dest)) {
-                    return null;
-                } else {
+                if(IsLocatable(dest)) {
                     return dest;
                 }
+                // SRS回転
+                dest_srs = new Mino(dest);
+                if(dest.Type == MinoType.I) {
+                    // SRS-I1
+                    switch(dest.Rotate) {
+                        case 0:
+                            dest_srs.Position.x -= 2;
+                            break;
+                        case 1:
+                            dest_srs.Position.x -= 2;
+                            break;
+                        case 2:
+                            dest_srs.Position.x -= 1;
+                            break;
+                        case 3:
+                            dest_srs.Position.x += 2;
+                            break;
+                    }
+                    if(IsLocatable(dest_srs)) {
+                        return dest_srs;
+                    }
+                    // SRS-I2
+                    dest_srs.Position = dest.Position;
+                    switch(dest.Rotate) {
+                        case 0:
+                            dest_srs.Position.x += 1;
+                            break;
+                        case 1:
+                            dest_srs.Position.x += 1;
+                            break;
+                        case 2:
+                            dest_srs.Position.x += 2;
+                            break;
+                        case 3:
+                            dest_srs.Position.x -= 1;
+                            break;
+                    }
+                    if(IsLocatable(dest_srs)) {
+                        return dest_srs;
+                    }
+                    // SRS-I3
+                    dest_srs.Position = dest.Position;
+                    switch(dest.Rotate) {
+                        case 0:
+                            dest_srs.Position.x += 1;
+                            dest_srs.Position.y -= 2;
+                            break;
+                        case 1:
+                            dest_srs.Position.x -= 2;
+                            dest_srs.Position.y -= 1;
+                            break;
+                        case 2:
+                            dest_srs.Position.x -= 1;
+                            dest_srs.Position.y += 2;
+                            break;
+                        case 3:
+                            dest_srs.Position.x += 2;
+                            dest_srs.Position.y += 1;
+                            break;
+                    }
+                    if(IsLocatable(dest_srs)) {
+                        return dest_srs;
+                    }
+                    // SRS-I4
+                    dest_srs.Position = dest.Position;
+                    switch(dest.Rotate) {
+                        case 0:
+                            dest_srs.Position.x -= 2;
+                            dest_srs.Position.y += 1;
+                            break;
+                        case 1:
+                            dest_srs.Position.x += 1;
+                            dest_srs.Position.y += 2;
+                            break;
+                        case 2:
+                            dest_srs.Position.x += 2;
+                            dest_srs.Position.y -= 1;
+                            break;
+                        case 3:
+                            dest_srs.Position.x -= 1;
+                            dest_srs.Position.y -= 2;
+                            break;
+                    }
+                    if(IsLocatable(dest_srs)) {
+                        return dest_srs;
+                    }
+                } else {
+                    // SRS-T1
+                    switch(dest.Rotate) {
+                        case 0:
+                            dest_srs.Position.x -= 1;
+                            break;
+                        case 1:
+                            dest_srs.Position.x -= 1;
+                            break;
+                        case 2:
+                            dest_srs.Position.x += 1;
+                            break;
+                        case 3:
+                            dest_srs.Position.x += 1;
+                            break;
+                    }
+                    if(IsLocatable(dest_srs)) {
+                        return dest_srs;
+                    }
+                    // SRS-T2
+                    dest_srs.Position = dest.Position;
+                    switch(dest.Rotate) {
+                        case 0:
+                            dest_srs.Position.x -= 1;
+                            dest_srs.Position.y -= 1;
+                            break;
+                        case 1:
+                            dest_srs.Position.x -= 1;
+                            dest_srs.Position.y += 1;
+                            break;
+                        case 2:
+                            dest_srs.Position.x += 1;
+                            dest_srs.Position.y -= 1;
+                            break;
+                        case 3:
+                            dest_srs.Position.x += 1;
+                            dest_srs.Position.y += 1;
+                            break;
+                    }
+                    if(IsLocatable(dest_srs)) {
+                        return dest_srs;
+                    }
+                    // SRS-T3
+                    dest_srs.Position = dest.Position;
+                    switch(dest.Rotate) {
+                        case 0:
+                            dest_srs.Position.y += 2;
+                            break;
+                        case 1:
+                            dest_srs.Position.y -= 2;
+                            break;
+                        case 2:
+                            dest_srs.Position.y += 2;
+                            break;
+                        case 3:
+                            dest_srs.Position.y -= 2;
+                            break;
+                    }
+                    if(IsLocatable(dest_srs)) {
+                        return dest_srs;
+                    }
+                    // SRS-T4
+                    dest_srs.Position = dest.Position;
+                    switch(dest.Rotate) {
+                        case 0:
+                            dest_srs.Position.x -= 1;
+                            dest_srs.Position.y += 2;
+                            break;
+                        case 1:
+                            dest_srs.Position.x -= 1;
+                            dest_srs.Position.y -= 2;
+                            break;
+                        case 2:
+                            dest_srs.Position.x += 1;
+                            dest_srs.Position.y += 2;
+                            break;
+                        case 3:
+                            dest_srs.Position.x += 1;
+                            dest_srs.Position.y -= 2;
+                            break;
+                    }
+                    if(IsLocatable(dest_srs)) {
+                        return dest_srs;
+                    }
+                }
+                return null;
             case Operate.RotateLeft:
+                // 通常回転
                 dest.Rotate += 3;
                 dest.Rotate %= 4;
-                if(!IsLocatable(dest)) {
-                    return null;
-                } else {
+                if(IsLocatable(dest)) {
                     return dest;
                 }
+                // SRS回転
+                dest_srs = new Mino(dest);
+                if(dest.Type == MinoType.I) {
+                    // SRS-I1
+                    switch(dest.Rotate) {
+                        case 0:
+                            dest_srs.Position.x += 2;
+                            break;
+                        case 1:
+                            dest_srs.Position.x += 1;
+                            break;
+                        case 2:
+                            dest_srs.Position.x += 1;
+                            break;
+                        case 3:
+                            dest_srs.Position.x -= 1;
+                            break;
+                    }
+                    if(IsLocatable(dest_srs)) {
+                        return dest_srs;
+                    }
+                    // SRS-I2
+                    dest_srs.Position = dest.Position;
+                    switch(dest.Rotate) {
+                        case 0:
+                            dest_srs.Position.x -= 1;
+                            break;
+                        case 1:
+                            dest_srs.Position.x -= 2;
+                            break;
+                        case 2:
+                            dest_srs.Position.x -= 2;
+                            break;
+                        case 3:
+                            dest_srs.Position.x += 2;
+                            break;
+                    }
+                    if(IsLocatable(dest_srs)) {
+                        return dest_srs;
+                    }
+                    // SRS-I3
+                    dest_srs.Position = dest.Position;
+                    switch(dest.Rotate) {
+                        case 0:
+                            dest_srs.Position.x += 2;
+                            dest_srs.Position.y += 1;
+                            break;
+                        case 1:
+                            dest_srs.Position.x += 2;
+                            dest_srs.Position.y -= 2;
+                            break;
+                        case 2:
+                            dest_srs.Position.x -= 2;
+                            dest_srs.Position.y -= 2;
+                            break;
+                        case 3:
+                            dest_srs.Position.x -= 2;
+                            dest_srs.Position.y += 2;
+                            break;
+                    }
+                    if(IsLocatable(dest_srs)) {
+                        return dest_srs;
+                    }
+                    // SRS-I4
+                    dest_srs.Position = dest.Position;
+                    switch(dest.Rotate) {
+                        case 0:
+                            dest_srs.Position.x -= 1;
+                            dest_srs.Position.y -= 2;
+                            break;
+                        case 1:
+                            dest_srs.Position.x -= 2;
+                            dest_srs.Position.y += 1;
+                            break;
+                        case 2:
+                            dest_srs.Position.x += 1;
+                            dest_srs.Position.y += 2;
+                            break;
+                        case 3:
+                            dest_srs.Position.x += 2;
+                            dest_srs.Position.y -= 1;
+                            break;
+                    }
+                    if(IsLocatable(dest_srs)) {
+                        return dest_srs;
+                    }
+                } else {
+                    // SRS-T1
+                    switch(dest.Rotate) {
+                        case 0:
+                            dest_srs.Position.x += 1;
+                            break;
+                        case 1:
+                            dest_srs.Position.x -= 1;
+                            break;
+                        case 2:
+                            dest_srs.Position.x -= 1;
+                            break;
+                        case 3:
+                            dest_srs.Position.x += 1;
+                            break;
+                    }
+                    if(IsLocatable(dest_srs)) {
+                        return dest_srs;
+                    }
+                    // SRS-T2
+                    dest_srs.Position = dest.Position;
+                    switch(dest.Rotate) {
+                        case 0:
+                            dest_srs.Position.x += 1;
+                            dest_srs.Position.y -= 1;
+                            break;
+                        case 1:
+                            dest_srs.Position.x -= 1;
+                            dest_srs.Position.y += 1;
+                            break;
+                        case 2:
+                            dest_srs.Position.x -= 1;
+                            dest_srs.Position.y -= 1;
+                            break;
+                        case 3:
+                            dest_srs.Position.x += 1;
+                            dest_srs.Position.y += 1;
+                            break;
+                    }
+                    if(IsLocatable(dest_srs)) {
+                        return dest_srs;
+                    }
+                    // SRS-T3
+                    dest_srs.Position = dest.Position;
+                    switch(dest.Rotate) {
+                        case 0:
+                            dest_srs.Position.y += 2;
+                            break;
+                        case 1:
+                            dest_srs.Position.y -= 2;
+                            break;
+                        case 2:
+                            dest_srs.Position.y += 2;
+                            break;
+                        case 3:
+                            dest_srs.Position.y -= 2;
+                            break;
+                    }
+                    if(IsLocatable(dest_srs)) {
+                        return dest_srs;
+                    }
+                    // SRS-T4
+                    dest_srs.Position = dest.Position;
+                    switch(dest.Rotate) {
+                        case 0:
+                            dest_srs.Position.x += 1;
+                            dest_srs.Position.y += 2;
+                            break;
+                        case 1:
+                            dest_srs.Position.x -= 1;
+                            dest_srs.Position.y -= 2;
+                            break;
+                        case 2:
+                            dest_srs.Position.x -= 1;
+                            dest_srs.Position.y += 2;
+                            break;
+                        case 3:
+                            dest_srs.Position.x += 1;
+                            dest_srs.Position.y -= 2;
+                            break;
+                    }
+                    if(IsLocatable(dest_srs)) {
+                        return dest_srs;
+                    }
+                }
+                return null;
             default:
                 return null;
         }
-        
     }
 
     /// <summary>
