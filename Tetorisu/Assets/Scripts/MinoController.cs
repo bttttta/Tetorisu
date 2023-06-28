@@ -76,6 +76,8 @@ public class MinoController : MonoBehaviour
                 } else {
                     FieldMinos.Add(mino);
                     mino = new Mino(NextManager.Get());
+                    fallTime = 0F;
+                    break;
                 }
             }
         } else {
@@ -98,12 +100,14 @@ public class MinoController : MonoBehaviour
         int ret = 0;
 
         if(FieldMinos.Move(mino, Operate.SoftDrop) == null) {
+            // 接地している
             if(fallTime > 0.5F) {
                 ret = 1;
             } else {
                 ret = 0;
             }
         } else {
+            // 自由落下中
             if(level < 10) {
                 if(fallTime * level > 1F) {
                     ret = 1;
