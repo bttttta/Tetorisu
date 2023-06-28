@@ -46,7 +46,7 @@ public class GhostManager : MonoBehaviour
     void SetSprites() {
         Vector2Int[] minoPositions = ghostMino.AllPositions;
         for(int i = 0; i < blocks.Length; ++i) {
-            blockTransforms[i].position = new Vector3(minoPositions[i].x * MINO_SIZE + fieldTransform.position.x, minoPositions[i].y * MINO_SIZE + fieldTransform.position.y, 0);
+            blockTransforms[i].position = new Vector3(minoPositions[i].x * MINO_SIZE + fieldTransform.position.x, minoPositions[i].y * MINO_SIZE + fieldTransform.position.y, 0.5F);
             blockSpriteRenderers[i].sprite = minoManager.Sprites[(int)ghostMino.Type];
         }
     }
